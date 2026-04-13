@@ -43,10 +43,8 @@ export default function Home() {
       {/* ── HERO ── */}
       <section className="relative h-screen min-h-[620px] flex flex-col justify-end overflow-hidden">
         {/* Background — replace with your photo */}
-        <div className="absolute inset-0 bg-[#1A0906] flex flex-col items-center justify-center gap-3">
-          {/* REPLACE THIS DIV with: <Image src="/images/hero.jpg" alt="Souk El Bey" fill className="object-cover" priority /> */}
-          <span className="text-5xl opacity-10">📸</span>
-          <span className="text-[11px] tracking-[0.14em] uppercase text-white/18 font-inter">Votre photo hero ici · 1920×1080px</span>
+        <div className="absolute inset-0">
+          <Image src="/images/hero.jpg" alt="Souk El Bey — Restaurant Tunisien" fill className="object-cover" priority />
         </div>
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#080402]/95 via-[#080402]/50 to-[#080402]/10" />
@@ -139,13 +137,11 @@ export default function Home() {
           {/* Photo grid */}
           <div className="grid grid-cols-2 gap-2">
             {/* Main photo */}
-            <div className="col-span-2 h-[280px] bg-[#EDE0C4] rounded-sm flex items-center justify-center relative overflow-hidden">
-              {/* REPLACE: <Image src="/images/story-main.jpg" alt="Restaurant Souk El Bey" fill className="object-cover" /> */}
-              <span className="text-[10px] tracking-[0.12em] uppercase text-[#9A8878] font-inter">📸 Ambiance restaurant</span>
+            <div className="col-span-2 h-[280px] bg-[#EDE0C4] rounded-sm relative overflow-hidden">
+              <Image src="/images/story-main.jpg" alt="Restaurant Souk El Bey — Ambiance" fill className="object-cover" />
             </div>
-            <div className="h-[150px] bg-[#E8D9B5] rounded-sm flex items-center justify-center relative overflow-hidden">
-              {/* REPLACE: <Image src="/images/story-food.jpg" alt="Plat signature" fill className="object-cover" /> */}
-              <span className="text-[9px] tracking-[0.1em] uppercase text-[#9A8878] font-inter">📸 Plat</span>
+            <div className="h-[150px] bg-[#E8D9B5] rounded-sm relative overflow-hidden">
+              <Image src="/images/story-food.jpg" alt="Couscous Tunisien — Plat signature" fill className="object-cover" />
             </div>
             <div className="h-[150px] bg-[#EDE0C4] rounded-sm flex items-center justify-center relative overflow-hidden">
               {/* REPLACE: <Image src="/images/story-shop.jpg" alt="Épicerie" fill className="object-cover" /> */}
