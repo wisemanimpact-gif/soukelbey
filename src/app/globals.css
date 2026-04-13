@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --red: #C41E1E;
+  --gold: #C4931A;
+  --ink: #0F0A06;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #FAFAF8;
+  color: #0F0A06;
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-ticker { animation: ticker 30s linear infinite; }
+
+@keyframes scrollDot {
+  from { top: -20px; }
+  to   { top: 100%; }
+}
+.animate-scroll-dot { animation: scrollDot 2.2s ease-in-out infinite; }
