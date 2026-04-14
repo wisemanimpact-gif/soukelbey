@@ -1,3 +1,11 @@
+export function generateStaticParams() {
+  return [
+    { slug: 'article-1' },
+    { slug: 'article-2' },
+    { slug: 'article-3' },
+  ]
+}
+
 export default function BlogPost({ params }: { params: { slug: string } }) {
   return (
     <div className="min-h-screen pt-24 px-[5vw] max-w-3xl mx-auto py-24">
