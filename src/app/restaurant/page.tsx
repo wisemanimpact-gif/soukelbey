@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { menuItems, categories } from '@/lib/menu'
 
 export default function RestaurantPage() {
-  const [activeCategory, setActiveCategory] = useState('plats')
+  const [activeCategory, setActiveCategory] = useState('pizzas')
   const filtered = menuItems.filter(item => item.category === activeCategory)
 
   return (
@@ -118,6 +118,34 @@ export default function RestaurantPage() {
       {/* ── DIVIDER ── */}
       <div className="h-px bg-gradient-to-r from-transparent via-[#C4931A]/30 to-transparent" />
 
+      {/* ── FRICASSÉ HIGHLIGHT ── */}
+      <section className="bg-[#0F0A06] overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-stretch">
+          <div className="relative min-h-[320px]">
+            <Image
+              src="/images/fricasseTunesein.png"
+              alt="Fricassé Tunisien — Souk El Bey"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="px-[5vw] py-14 flex flex-col justify-center">
+            <p className="text-[10px] tracking-[0.18em] uppercase text-[#E8B84B] flex items-center gap-2 mb-4 font-medium font-inter">
+              <span className="w-4 h-px bg-[#E8B84B]" /> À ne pas manquer · Must try
+            </p>
+            <h2 className="font-syne text-[clamp(28px,3.5vw,46px)] font-extrabold text-white leading-[0.95] tracking-[-0.03em] mb-4">
+              Le Fricassé<br /><em className="font-normal text-[#E8B84B]">tunisien.</em>
+            </h2>
+            <p className="text-[14px] text-white/45 leading-[1.85] font-light font-inter max-w-[400px] mb-4">
+              Mini sandwich de beignet garni à la sauce harissa, pomme de terre, thon, œuf dur et olives. Un classique de la street food tunisienne — à commander 1 heure à l&apos;avance.
+            </p>
+            <span className="font-syne text-[36px] font-extrabold text-[#E8B84B] leading-none tracking-[-0.03em]">
+              2<span className="text-[22px] text-[#E8B84B]/70">,99$</span>
+            </span>
+          </div>
+        </div>
+      </section>
+
       {/* ── MENU COMPLET ── */}
       <section id="menu" className="bg-[#FAFAF8] px-[5vw] py-20">
         {/* Header */}
@@ -172,9 +200,22 @@ export default function RestaurantPage() {
                     {item.name.en}
                   </p>
                 </div>
-                <span className="font-syne text-[20px] font-extrabold text-[#C41E1E] tracking-[-0.02em] flex-shrink-0">
-                  ${item.price.toFixed(2)}
-                </span>
+                {item.sizes ? (
+                  <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
+                    {item.sizes.map(s => (
+                      <div key={s.label} className="flex items-center gap-1.5">
+                        <span className="text-[10px] text-[#9A8878] font-inter font-medium">{s.label}</span>
+                        <span className="font-syne text-[16px] font-extrabold text-[#C41E1E] tracking-[-0.02em]">
+                          ${s.price.toFixed(2)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="font-syne text-[20px] font-extrabold text-[#C41E1E] tracking-[-0.02em] flex-shrink-0">
+                    ${item.price.toFixed(2)}
+                  </span>
+                )}
               </div>
               <hr className="border-black/7 my-2.5" />
               <p className="text-[13px] text-[#4A3828] leading-[1.75] font-light font-inter">

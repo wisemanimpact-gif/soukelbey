@@ -228,6 +228,43 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── OFFRE SPÉCIALE ── */}
+      <section className="bg-[#0B0705] px-[5vw] py-16 overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+          <div className="relative rounded-sm overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.5)]">
+            <Image
+              src="/images/apresHero.png"
+              alt="Offre Spéciale — 2 Pizzas + 1 Burger à 29,99$"
+              width={600}
+              height={700}
+              className="w-full h-auto object-cover"
+            />
+          </div>
+          <div>
+            <p className="text-[10px] tracking-[0.18em] uppercase text-[#E8B84B] flex items-center gap-2 mb-5 font-medium font-inter">
+              <span className="w-4 h-px bg-[#E8B84B]" /> Offre spéciale · Special Deal
+            </p>
+            <h2 className="font-syne text-[clamp(30px,4vw,52px)] font-extrabold text-white leading-[0.95] tracking-[-0.03em] mb-5">
+              2 Pizzas<br />+ 1 Burger<br />
+              <em className="font-normal text-[#E8B84B]">pour emporter.</em>
+            </h2>
+            <div className="flex items-baseline gap-2 mb-6">
+              <span className="font-syne text-[60px] font-extrabold text-[#E8B84B] leading-none tracking-[-0.04em]">29</span>
+              <span className="font-syne text-[30px] font-extrabold text-[#E8B84B]/70 tracking-[-0.02em]">,99$</span>
+            </div>
+            <p className="text-[14px] text-white/45 leading-[1.8] font-light font-inter max-w-[380px] mb-8">
+              2 pizzas 12&quot; de votre choix et 1 burger classique — l&apos;offre idéale pour partager en famille ou entre amis.
+            </p>
+            <Link
+              href="/commander"
+              className="inline-block bg-[#C41E1E] text-white px-8 py-3.5 text-[12px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#A81818] hover:-translate-y-0.5 transition-all no-underline"
+            >
+              Commander cette offre →
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── ORDER ── */}
       <section id="commander" className="grid grid-cols-1 md:grid-cols-2 min-h-[640px]">
         {/* Left — dark pitch */}
