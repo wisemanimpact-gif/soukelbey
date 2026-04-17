@@ -28,7 +28,7 @@ const sections = [
     subtitle: 'Halal',
     label: 'Agneau frais · Fresh Lamb',
     accent: '#C4931A',
-    imagePlaceholder: '/images/angneau.png',
+    imagePlaceholder: '/images/agneau.png',
     imageAlt: 'Agneau — Souk El Bey Boucherie',
     items: [
       'Côtelettes',
