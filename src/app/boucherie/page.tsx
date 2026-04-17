@@ -99,12 +99,12 @@ export default function BoucheriePage() {
 
               {/* ── Image side ── */}
               <div className={`${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
-                <div className="relative rounded-sm overflow-hidden aspect-[4/3] shadow-[0_24px_64px_rgba(0,0,0,0.10)]">
+                <div className="relative rounded-sm overflow-hidden aspect-[4/3] bg-[#F4EDD8] shadow-[0_24px_64px_rgba(0,0,0,0.10)]">
                   <Image
                     src={section.imagePlaceholder}
                     alt={section.imageAlt}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
                 {/* Accent bar under image */}
