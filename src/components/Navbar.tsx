@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useLanguage } from '@/lib/LanguageContext'
 
 const links = [
   { href: '/restaurant', fr: 'Restaurant', en: 'Restaurant' },
@@ -12,8 +13,8 @@ const links = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const [lang, setLang]         = useState<'fr'|'en'>('fr')
   const [open, setOpen]         = useState(false)
+  const { lang, setLang, t }    = useLanguage()
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60)
@@ -85,7 +86,7 @@ export default function Navbar() {
           href="/commander"
           className="bg-[#C41E1E] text-white px-4 py-2 text-[11px] tracking-[0.08em] rounded-sm font-medium hover:bg-[#A81818] transition-colors no-underline hidden sm:block"
         >
-          Commander →
+          {t('Commander →', 'Order →')}
         </Link>
 
         {/* Mobile hamburger */}
@@ -111,7 +112,7 @@ export default function Navbar() {
           ))}
           <div className="px-8 pt-2">
             <Link href="/commander" className="block text-center bg-[#C41E1E] text-white py-3 text-[11px] tracking-[0.1em] rounded-sm font-medium">
-              Commander →
+              {t('Commander →', 'Order →')}
             </Link>
           </div>
         </div>

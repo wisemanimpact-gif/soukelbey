@@ -1,29 +1,41 @@
+'use client'
 import Link from 'next/link'
 import { siteMeta } from '@/lib/seo'
-
-const navCol = [
-  { title: 'Menu', links: [
-    { href: '/restaurant', label: 'Restaurant' },
-    { href: '/restaurant#menu', label: 'Menu complet' },
-    { href: '/boucherie', label: 'Boucherie' },
-    { href: '/epicerie', label: 'Épicerie' },
-    { href: '/commander', label: 'Commander en ligne' },
-  ]},
-  { title: 'Infos', links: [
-    { href: '/#story', label: 'Notre histoire' },
-    { href: '/blog', label: 'Blog' },
-    { href: '/#contact', label: 'Contact' },
-    { href: '/en', label: 'English' },
-  ]},
-  { title: 'Contact', links: [
-    { href: `tel:${siteMeta.phone}`, label: '514-916-2478' },
-    { href: `https://${siteMeta.url}`, label: 'soukelbey.ca' },
-    { href: 'https://maps.google.com/?q=1910+chemin+d\'Oka+Deux-Montagnes', label: '1910 ch. d\'Oka' },
-    { href: siteMeta.social.facebook, label: 'Facebook' },
-  ]},
-]
+import { useLanguage } from '@/lib/LanguageContext'
 
 export default function Footer() {
+  const { t } = useLanguage()
+
+  const navCol = [
+    {
+      title: t('Menu', 'Menu'),
+      links: [
+        { href: '/restaurant',      label: t('Restaurant', 'Restaurant') },
+        { href: '/restaurant#menu', label: t('Menu complet', 'Full menu') },
+        { href: '/boucherie',       label: t('Boucherie', 'Butcher') },
+        { href: '/epicerie',        label: t('Épicerie', 'Grocery') },
+        { href: '/commander',       label: t('Commander en ligne', 'Order online') },
+      ],
+    },
+    {
+      title: t('Infos', 'Info'),
+      links: [
+        { href: '/#story', label: t('Notre histoire', 'Our story') },
+        { href: '/blog',   label: t('Blog', 'Blog') },
+        { href: '/#contact', label: t('Contact', 'Contact') },
+      ],
+    },
+    {
+      title: t('Contact', 'Contact'),
+      links: [
+        { href: `tel:${siteMeta.phone}`, label: '514-916-2478' },
+        { href: `https://${siteMeta.url}`, label: 'soukelbey.ca' },
+        { href: 'https://maps.google.com/?q=1910+chemin+d\'Oka+Deux-Montagnes', label: '1910 ch. d\'Oka' },
+        { href: siteMeta.social.facebook, label: 'Facebook' },
+      ],
+    },
+  ]
+
   return (
     <footer className="bg-[#0F0A06] pt-20 pb-9 px-[5vw]">
       <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-14 pb-14 border-b border-white/7 mb-8">
@@ -42,7 +54,10 @@ export default function Footer() {
             </span>
           </div>
           <p className="text-[13px] text-white/35 leading-[1.85] max-w-[260px] font-light mb-6">
-            Votre destination tunisienne au Québec depuis 2021. Restaurant, boucherie halal & épicerie — à 20 min de Montréal.
+            {t(
+              'Votre destination tunisienne au Québec depuis 2021. Restaurant, boucherie halal & épicerie — à 20 min de Montréal.',
+              'Your Tunisian destination in Quebec since 2021. Restaurant, halal butcher & grocery — 20 min from Montreal.'
+            )}
           </p>
           <div className="flex gap-2">
             {[
@@ -81,7 +96,12 @@ export default function Footer() {
       </div>
 
       <div className="flex flex-wrap justify-between items-center gap-3">
-        <span className="text-[11px] text-white/18">© 2025 Souk El Bey · soukelbey.ca · Tous droits réservés</span>
+        <span className="text-[11px] text-white/18">
+          {t(
+            '© 2025 Souk El Bey · soukelbey.ca · Tous droits réservés',
+            '© 2025 Souk El Bey · soukelbey.ca · All rights reserved'
+          )}
+        </span>
         <span className="text-[11px] text-white/18">Deux-Montagnes, Québec 🇨🇦</span>
       </div>
     </footer>

@@ -1,9 +1,11 @@
 'use client'
 import { useState } from 'react'
+import { useLanguage } from '@/lib/LanguageContext'
 
 type FormState = 'idle' | 'loading' | 'success' | 'error'
 
 export default function OrderForm() {
+  const { t } = useLanguage()
   const [state, setState] = useState<FormState>('idle')
   const [form, setForm] = useState({
     type: 'pickup', firstName: '', lastName: '', phone: '', time: 'asap', note: '',
@@ -38,50 +40,60 @@ export default function OrderForm() {
   if (state === 'success') return (
     <div className="flex flex-col items-center justify-center py-16 gap-4">
       <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center text-2xl">✓</div>
-      <h3 className="font-syne text-xl font-bold text-[#0F0A06]">Commande reçue !</h3>
+      <h3 className="font-syne text-xl font-bold text-[#0F0A06]">
+        {t('Commande reçue !', 'Order received!')}
+      </h3>
       <p className="text-[14px] text-[#9A8878] text-center max-w-sm font-light">
-        Nous vous contactons dans les prochaines minutes pour confirmer votre commande.
+        {t(
+          'Nous vous contactons dans les prochaines minutes pour confirmer votre commande.',
+          'We\'ll contact you in the next few minutes to confirm your order.'
+        )}
       </p>
       <button onClick={() => setState('idle')} className="mt-4 text-[11px] text-[#C41E1E] underline">
-        Nouvelle commande
+        {t('Nouvelle commande', 'New order')}
       </button>
     </div>
   )
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col">
-      <h3 className="font-syne text-2xl font-bold text-[#0F0A06] mb-1">Passer une commande</h3>
+      <h3 className="font-syne text-2xl font-bold text-[#0F0A06] mb-1">
+        {t('Passer une commande', 'Place an order')}
+      </h3>
       <p className="text-[13px] text-[#9A8878] mb-7 font-light">
-        Nous vous contactons pour confirmer votre commande.
+        {t(
+          'Nous vous contactons pour confirmer votre commande.',
+          'We\'ll contact you to confirm your order.'
+        )}
       </p>
 
-      {field('Type de commande', (
+      {field(t('Type de commande', 'Order type'), (
         <select
           value={form.type}
           onChange={e => setForm({...form, type: e.target.value})}
           className={inputCls}
         >
-          <option value="pickup">🏪 Cueillette au comptoir · Pickup</option>
-          <option value="delivery">🚗 Livraison locale · Local Delivery</option>
+          <option value="pickup">{t('🏪 Cueillette au comptoir', '🏪 Pickup at counter')}</option>
+          <option value="delivery">{t('🚗 Livraison locale', '🚗 Local delivery')}</option>
         </select>
       ))}
 
       <div className="grid grid-cols-2 gap-3">
-        {field('Prénom · First name', (
+        {field(t('Prénom', 'First name'), (
           <input
             required
             type="text"
-            placeholder="Jean"
+            placeholder={t('Jean', 'John')}
             value={form.firstName}
             onChange={e => setForm({...form, firstName: e.target.value})}
             className={inputCls}
           />
         ))}
-        {field('Nom · Last name', (
+        {field(t('Nom', 'Last name'), (
           <input
             required
             type="text"
-            placeholder="Dupont"
+            placeholder={t('Dupont', 'Doe')}
             value={form.lastName}
             onChange={e => setForm({...form, lastName: e.target.value})}
             className={inputCls}
@@ -89,7 +101,7 @@ export default function OrderForm() {
         ))}
       </div>
 
-      {field('Téléphone · Phone', (
+      {field(t('Téléphone', 'Phone'), (
         <input
           required
           type="tel"
@@ -100,23 +112,23 @@ export default function OrderForm() {
         />
       ))}
 
-      {field('Heure souhaitée · Preferred time', (
+      {field(t('Heure souhaitée', 'Preferred time'), (
         <select
           value={form.time}
           onChange={e => setForm({...form, time: e.target.value})}
           className={inputCls}
         >
-          <option value="asap">Dès que possible · ASAP</option>
-          <option value="30min">Dans 30 min</option>
-          <option value="1h">Dans 1 heure</option>
-          <option value="custom">Autre heure</option>
+          <option value="asap">{t('Dès que possible', 'As soon as possible')}</option>
+          <option value="30min">{t('Dans 30 min', 'In 30 min')}</option>
+          <option value="1h">{t('Dans 1 heure', 'In 1 hour')}</option>
+          <option value="custom">{t('Autre heure', 'Other time')}</option>
         </select>
       ))}
 
-      {field('Note (optionnel) · Note (optional)', (
+      {field(t('Note (optionnel)', 'Note (optional)'), (
         <textarea
           rows={2}
-          placeholder="Allergies, demandes spéciales..."
+          placeholder={t('Allergies, demandes spéciales...', 'Allergies, special requests...')}
           value={form.note}
           onChange={e => setForm({...form, note: e.target.value})}
           className={`${inputCls} resize-none`}
@@ -128,17 +140,25 @@ export default function OrderForm() {
         disabled={state === 'loading'}
         className="w-full bg-[#C41E1E] text-white py-3.5 text-[11px] tracking-[0.1em] uppercase font-medium font-inter rounded-sm mt-1 transition-all hover:bg-[#A81818] hover:shadow-[0_6px_20px_rgba(196,30,30,0.3)] hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {state === 'loading' ? 'Envoi en cours...' : 'Voir le menu & commander →'}
+        {state === 'loading'
+          ? t('Envoi en cours...', 'Sending...')
+          : t('Voir le menu & commander →', 'View the menu & order →')}
       </button>
 
       {state === 'error' && (
         <p className="text-center text-[12px] text-red-600 mt-3">
-          Une erreur est survenue. Appelez-nous au 514-916-2478.
+          {t(
+            'Une erreur est survenue. Appelez-nous au 514-916-2478.',
+            'Something went wrong. Please call us at 514-916-2478.'
+          )}
         </p>
       )}
 
       <p className="text-[10px] text-[#9A8878] text-center mt-2.5 tracking-[0.04em]">
-        🔒 Vos données sont sécurisées et ne sont jamais partagées
+        {t(
+          '🔒 Vos données sont sécurisées et ne sont jamais partagées',
+          '🔒 Your data is secure and never shared'
+        )}
       </p>
     </form>
   )
