@@ -187,31 +187,47 @@ export default function Home() {
       {/* ── TICKER ── */}
       <Ticker />
 
-      {/* ── PILLARS ── */}
-      <section className="bg-white border-t border-black/7">
-        <div className="px-[5vw] py-16 border-b border-black/7">
-          <p className="text-[10px] tracking-[0.18em] uppercase text-[#C41E1E] flex items-center gap-2 mb-4 font-medium font-inter">
-            <span className="w-4 h-px bg-[#C41E1E]" /> {t('Ce qu\'on offre', 'What we offer')}
-          </p>
-          <h2 className="font-syne text-[clamp(36px,5vw,64px)] font-extrabold text-[#0F0A06] leading-[0.95] tracking-[-0.03em]">
-            {t(<>Trois concepts,<br /><em className="font-normal text-[#9A8878]">une seule adresse.</em></>,
-               <>Three concepts,<br /><em className="font-normal text-[#9A8878]">one address.</em></>)}
-          </h2>
+      {/* ── BOUCHERIE ── */}
+      <section className="grid grid-cols-1 md:grid-cols-2">
+        <div className="min-h-[520px] bg-[#EDE0C4] flex items-center justify-center relative overflow-hidden">
+          <span className="text-[11px] tracking-[0.12em] uppercase text-[#9A8878] font-inter relative z-10">📸 {t('Photo boucherie / viandes', 'Butcher / meats photo')}</span>
+          <div className="absolute top-8 right-8 z-20 w-20 h-20 rounded-full bg-white border-2 border-[#C4931A] flex flex-col items-center justify-center shadow-lg">
+            <span className="text-xl text-[#C4931A]">☪</span>
+            <span className="text-[7px] tracking-[0.14em] uppercase text-[#4A3828] font-medium font-inter mt-0.5">Halal</span>
+            <span className="text-[7px] tracking-[0.1em] uppercase text-[#9A8878] font-inter">{t('Certifié', 'Certified')}</span>
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3">
-          {pillars.map((p, i) => (
-            <div key={p.num} className={`relative p-12 group cursor-pointer hover:bg-[#FAFAF8] transition-colors ${i < 2 ? 'md:border-r border-black/7' : ''} border-b md:border-b-0 border-black/7`}>
-              <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#C41E1E] to-[#C4931A] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              <span className="font-syne text-[11px] font-bold text-[#C41E1E] tracking-[0.1em] block mb-5">{p.num}</span>
-              <span className="text-3xl block mb-5">{p.icon}</span>
-              <h3 className="font-syne text-[22px] font-bold text-[#0F0A06] tracking-[-0.02em] mb-1">{lang === 'en' ? p.en : p.fr}</h3>
-              <p className="text-[10px] tracking-[0.1em] uppercase text-[#9A8878] font-inter mb-4">{lang === 'en' ? p.subEn : p.subFr}</p>
-              <p className="text-[13.5px] text-[#4A3828] leading-[1.8] mb-6 font-light font-inter">{lang === 'en' ? p.descEn : p.descFr}</p>
-              <Link href={p.href} className="text-[11px] tracking-[0.06em] text-[#C41E1E] font-medium font-inter no-underline inline-flex items-center gap-2 group-hover:gap-3.5 transition-all">
-                {lang === 'en' ? p.linkEn : p.linkFr} →
-              </Link>
-            </div>
-          ))}
+
+        <div className="bg-[#0F0A06] px-[5vw] py-20 flex flex-col justify-center">
+          <p className="text-[10px] tracking-[0.18em] uppercase text-[#E8B84B] flex items-center gap-2 mb-5 font-medium font-inter">
+            <span className="w-4 h-px bg-[#E8B84B]" /> {t('Boucherie Halal', 'Halal Butcher')}
+          </p>
+          <h2 className="font-syne text-[clamp(28px,3vw,44px)] font-extrabold text-white leading-[1.05] tracking-[-0.03em] mb-5">
+            {t(<>Fraîcheur<br />& tradition<br /><em className="font-normal text-[#E8B84B]">halal.</em></>,
+               <>Freshness<br />& halal<br /><em className="font-normal text-[#E8B84B]">tradition.</em></>)}
+          </h2>
+          <p className="text-[14px] text-white/45 leading-[1.85] font-light font-inter mb-8">
+            {t(
+              'Nos bouchers sélectionnent et découpent chaque pièce selon les traditions artisanales. Qualité certifiée, fraîcheur garantie chaque matin.',
+              'Our butchers select and cut every piece according to artisan traditions. Certified quality, freshness guaranteed every morning.'
+            )}
+          </p>
+          <div className="grid grid-cols-2 gap-px bg-white/5 mb-8">
+            {[
+              [t('Bœuf', 'Beef'),           t('Côtes, épaule, haché maison',  'Ribs, shoulder, house-ground')],
+              [t('Agneau', 'Lamb'),         t('Gigot, côtelettes, carré',     'Leg, chops, rack')],
+              [t('Poulet fermier', 'Farm chicken'), t('Entier, filets, cuisses', 'Whole, fillets, thighs')],
+              [t('Merguez maison', 'House merguez'), t('Bœuf & agneau épicé',   'Spiced beef & lamb')],
+            ].map(([title,sub]) => (
+              <div key={String(title)} className="bg-white/2 hover:bg-white/6 transition-colors p-4 cursor-pointer">
+                <strong className="font-syne text-[15px] font-bold text-white block mb-0.5 tracking-[-0.01em]">{title}</strong>
+                <span className="text-[11px] text-white/35 font-inter">{sub}</span>
+              </div>
+            ))}
+          </div>
+          <Link href="/boucherie" className="self-start text-[#E8B84B] border border-[#C4931A]/35 px-5 py-2.5 text-[11px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#C4931A]/10 hover:border-[#E8B84B] transition-all no-underline">
+            {t('Explorer la boucherie →', 'Explore the butcher →')}
+          </Link>
         </div>
       </section>
 
@@ -403,50 +419,6 @@ export default function Home() {
 
         <div className="bg-[#FAFAF8] px-[5vw] py-20 flex flex-col justify-center">
           <OrderForm />
-        </div>
-      </section>
-
-      {/* ── BOUCHERIE ── */}
-      <section className="grid grid-cols-1 md:grid-cols-2">
-        <div className="min-h-[520px] bg-[#EDE0C4] flex items-center justify-center relative overflow-hidden">
-          <span className="text-[11px] tracking-[0.12em] uppercase text-[#9A8878] font-inter relative z-10">📸 {t('Photo boucherie / viandes', 'Butcher / meats photo')}</span>
-          <div className="absolute top-8 right-8 z-20 w-20 h-20 rounded-full bg-white border-2 border-[#C4931A] flex flex-col items-center justify-center shadow-lg">
-            <span className="text-xl text-[#C4931A]">☪</span>
-            <span className="text-[7px] tracking-[0.14em] uppercase text-[#4A3828] font-medium font-inter mt-0.5">Halal</span>
-            <span className="text-[7px] tracking-[0.1em] uppercase text-[#9A8878] font-inter">{t('Certifié', 'Certified')}</span>
-          </div>
-        </div>
-
-        <div className="bg-[#0F0A06] px-[5vw] py-20 flex flex-col justify-center">
-          <p className="text-[10px] tracking-[0.18em] uppercase text-[#E8B84B] flex items-center gap-2 mb-5 font-medium font-inter">
-            <span className="w-4 h-px bg-[#E8B84B]" /> {t('Boucherie Halal', 'Halal Butcher')}
-          </p>
-          <h2 className="font-syne text-[clamp(28px,3vw,44px)] font-extrabold text-white leading-[1.05] tracking-[-0.03em] mb-5">
-            {t(<>Fraîcheur<br />& tradition<br /><em className="font-normal text-[#E8B84B]">halal.</em></>,
-               <>Freshness<br />& halal<br /><em className="font-normal text-[#E8B84B]">tradition.</em></>)}
-          </h2>
-          <p className="text-[14px] text-white/45 leading-[1.85] font-light font-inter mb-8">
-            {t(
-              'Nos bouchers sélectionnent et découpent chaque pièce selon les traditions artisanales. Qualité certifiée, fraîcheur garantie chaque matin.',
-              'Our butchers select and cut every piece according to artisan traditions. Certified quality, freshness guaranteed every morning.'
-            )}
-          </p>
-          <div className="grid grid-cols-2 gap-px bg-white/5 mb-8">
-            {[
-              [t('Bœuf', 'Beef'),           t('Côtes, épaule, haché maison',  'Ribs, shoulder, house-ground')],
-              [t('Agneau', 'Lamb'),         t('Gigot, côtelettes, carré',     'Leg, chops, rack')],
-              [t('Poulet fermier', 'Farm chicken'), t('Entier, filets, cuisses', 'Whole, fillets, thighs')],
-              [t('Merguez maison', 'House merguez'), t('Bœuf & agneau épicé',   'Spiced beef & lamb')],
-            ].map(([title,sub]) => (
-              <div key={String(title)} className="bg-white/2 hover:bg-white/6 transition-colors p-4 cursor-pointer">
-                <strong className="font-syne text-[15px] font-bold text-white block mb-0.5 tracking-[-0.01em]">{title}</strong>
-                <span className="text-[11px] text-white/35 font-inter">{sub}</span>
-              </div>
-            ))}
-          </div>
-          <Link href="/boucherie" className="self-start text-[#E8B84B] border border-[#C4931A]/35 px-5 py-2.5 text-[11px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#C4931A]/10 hover:border-[#E8B84B] transition-all no-underline">
-            {t('Explorer la boucherie →', 'Explore the butcher →')}
-          </Link>
         </div>
       </section>
 
