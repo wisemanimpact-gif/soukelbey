@@ -190,7 +190,7 @@ export default function Home() {
       {/* ── BOUCHERIE ── */}
       <section className="grid grid-cols-1 md:grid-cols-2">
         <div className="min-h-[520px] bg-[#EDE0C4] flex items-center justify-center relative overflow-hidden">
-          <Image src="/images/boucherie.png" alt={t('Boucherie halal — viandes fraîches', 'Halal butcher — fresh meats') as string} fill className="object-cover" />
+          <Image src="/images/boucherie.png" alt={t('Boucherie halal — viandes fraîches', 'Halal butcher — fresh meats') as string} fill className="object-contain" />
           <div className="absolute top-8 right-8 z-20 w-20 h-20 rounded-full bg-white border-2 border-[#C4931A] flex flex-col items-center justify-center shadow-lg">
             <span className="text-xl text-[#C4931A]">☪</span>
             <span className="text-[7px] tracking-[0.14em] uppercase text-[#4A3828] font-medium font-inter mt-0.5">Halal</span>
@@ -234,16 +234,8 @@ export default function Home() {
       {/* ── STORY ── */}
       <section id="story" className="bg-[#FAFAF8] px-[5vw] py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-          <div className="grid grid-cols-2 gap-2">
-            <div className="col-span-2 h-[280px] bg-[#EDE0C4] rounded-sm relative overflow-hidden">
-              <Image src="/images/story-main.jpg" alt="Restaurant Souk El Bey" fill className="object-cover" />
-            </div>
-            <div className="h-[150px] bg-[#E8D9B5] rounded-sm relative overflow-hidden">
-              <Image src="/images/story-food.jpg" alt="Couscous Tunisien" fill className="object-cover" />
-            </div>
-            <div className="h-[150px] bg-[#EDE0C4] rounded-sm flex items-center justify-center relative overflow-hidden">
-              <span className="text-[9px] tracking-[0.1em] uppercase text-[#9A8878] font-inter">📸 {t('Épicerie', 'Grocery')}</span>
-            </div>
+          <div className="h-[440px] bg-[#EDE0C4] rounded-sm relative overflow-hidden">
+            <Image src="/images/story-main.jpg" alt="Restaurant Souk El Bey" fill className="object-cover" />
           </div>
 
           <div>
