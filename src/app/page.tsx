@@ -136,8 +136,8 @@ export default function Home() {
             </span>
           </div>
           <h1 className="font-syne text-[clamp(56px,9vw,116px)] text-white leading-[0.92] font-extrabold tracking-[-0.03em] mb-7">
-            {t(<>Saveurs<br /><em className="font-normal text-white/45">authentiques</em><br /><span className="text-[#C4931A]">de Tunisie.</span></>,
-               <>Authentic<br /><em className="font-normal text-white/45">flavors</em><br /><span className="text-[#C4931A]">of Tunisia.</span></>)}
+            {t(<>Saveurs<br /><em className="font-normal text-white/45">authentiques</em><br /><span className="text-[#002868]">de Tunisie.</span></>,
+               <>Authentic<br /><em className="font-normal text-white/45">flavors</em><br /><span className="text-[#002868]">of Tunisia.</span></>)}
           </h1>
 
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8 flex-wrap">
@@ -190,7 +190,7 @@ export default function Home() {
       {/* ── BOUCHERIE ── */}
       <section className="grid grid-cols-1 md:grid-cols-2">
         <div className="min-h-[520px] bg-[#EDE0C4] flex items-center justify-center relative overflow-hidden">
-          <span className="text-[11px] tracking-[0.12em] uppercase text-[#9A8878] font-inter relative z-10">📸 {t('Photo boucherie / viandes', 'Butcher / meats photo')}</span>
+          <Image src="/images/boucherie.png" alt={t('Boucherie halal — viandes fraîches', 'Halal butcher — fresh meats') as string} fill className="object-cover" />
           <div className="absolute top-8 right-8 z-20 w-20 h-20 rounded-full bg-white border-2 border-[#C4931A] flex flex-col items-center justify-center shadow-lg">
             <span className="text-xl text-[#C4931A]">☪</span>
             <span className="text-[7px] tracking-[0.14em] uppercase text-[#4A3828] font-medium font-inter mt-0.5">Halal</span>
