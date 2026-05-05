@@ -1,24 +1,16 @@
 'use client'
 
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { menuItems, categories, type MenuItem } from '@/lib/menu'
 import { useLanguage } from '@/lib/LanguageContext'
+import { useCart, type CartLine } from '@/lib/CartContext'
 
 // ─── TAX CONSTANTS (Quebec) ──────────────────────────────────
 const TPS_RATE = 0.05      // GST
 const TVQ_RATE = 0.09975   // QST
 
 // ─── TYPES ───────────────────────────────────────────────────
-type CartLine = {
-  key: string          // unique per line  (item.id + size)
-  itemId: string
-  nameFr: string
-  nameEn: string
-  size?: string
-  unitPrice: number
-  qty: number
-}
 
 type CheckoutPayload = {
   lines: Array<{
@@ -75,6 +67,9 @@ const RESTAURANT_CATEGORIES = categories.map(c => c.key)
 // ─── PAGE ───────────────────────────────────────────────────
 export default function CommanderPage() {
   const { lang, t } = useLanguage()
+  // Cart comes from the shared context (persisted in localStorage,
+  // shared with /restaurant so click-to-order from there works)
+  const { cart, addItem: addToCart, updateQty, removeLine, clearCart } = useCart()
 
   // Detect success / cancel return from Stripe
   const [returnState, setReturnState] = useState<'idle' | 'success' | 'canceled'>('idle')
@@ -85,10 +80,12 @@ export default function CommanderPage() {
     if (params.get('success') === '1') {
       setReturnState('success')
       setReturnSessionId(params.get('session_id'))
+      // Order is paid → empty the cart so it's not still sitting there
+      clearCart()
     } else if (params.get('canceled') === '1') {
       setReturnState('canceled')
     }
-  }, [])
+  }, [clearCart])
 
   // Active category tab
   const [activeCategory, setActiveCategory] = useState<string>(RESTAURANT_CATEGORIES[0])
@@ -97,44 +94,7 @@ export default function CommanderPage() {
     [activeCategory],
   )
 
-  // Cart
-  const [cart, setCart] = useState<CartLine[]>([])
   const [showMobileCart, setShowMobileCart] = useState(false)
-
-  const addToCart = useCallback((item: MenuItem, size?: { label: string; price: number }) => {
-    const unitPrice = size ? size.price : item.price
-    const key = size ? `${item.id}::${size.label}` : item.id
-    setCart(prev => {
-      const existing = prev.find(l => l.key === key)
-      if (existing) {
-        return prev.map(l => (l.key === key ? { ...l, qty: l.qty + 1 } : l))
-      }
-      return [
-        ...prev,
-        {
-          key,
-          itemId: item.id,
-          nameFr: item.name.fr,
-          nameEn: item.name.en,
-          size: size?.label,
-          unitPrice,
-          qty: 1,
-        },
-      ]
-    })
-  }, [])
-
-  const updateQty = useCallback((key: string, delta: number) => {
-    setCart(prev =>
-      prev
-        .map(l => (l.key === key ? { ...l, qty: l.qty + delta } : l))
-        .filter(l => l.qty > 0),
-    )
-  }, [])
-
-  const removeLine = useCallback((key: string) => {
-    setCart(prev => prev.filter(l => l.key !== key))
-  }, [])
 
   // Totals
   const subtotal = useMemo(

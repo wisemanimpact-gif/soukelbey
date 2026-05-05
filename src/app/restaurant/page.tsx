@@ -3,13 +3,24 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { menuItems, categories } from '@/lib/menu'
+import { useRouter } from 'next/navigation'
+import { menuItems, categories, type MenuItem } from '@/lib/menu'
 import { useLanguage } from '@/lib/LanguageContext'
+import { useCart } from '@/lib/CartContext'
 
 export default function RestaurantPage() {
   const { lang, t } = useLanguage()
+  const { addItem, cart } = useCart()
+  const router = useRouter()
   const [activeCategory, setActiveCategory] = useState('pizzas')
   const filtered = menuItems.filter(item => item.category === activeCategory)
+  const cartCount = cart.reduce((s, l) => s + l.qty, 0)
+
+  // Add to cart and jump straight to /commander
+  const orderNow = (item: MenuItem, size?: { label: string; price: number }) => {
+    addItem(item, size)
+    router.push('/commander')
+  }
 
   const iftarItems = lang === 'en'
     ? [
@@ -176,9 +187,11 @@ export default function RestaurantPage() {
           </div>
           <Link
             href="/commander"
-            className="self-end bg-[#C41E1E] text-white px-6 py-3 text-[11px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#A81818] transition-colors no-underline"
+            className="self-end bg-[#C41E1E] text-white px-6 py-3 text-[11px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#A81818] transition-colors no-underline inline-flex items-center gap-2"
           >
-            {t('Commander en ligne →', 'Order online →')}
+            {cartCount > 0
+              ? t(`Voir mon panier (${cartCount}) →`, `View my cart (${cartCount}) →`)
+              : t('Commander en ligne →', 'Order online →')}
           </Link>
         </div>
 
@@ -204,7 +217,7 @@ export default function RestaurantPage() {
           {filtered.map(item => (
             <div
               key={item.id}
-              className="bg-white p-7 group hover:bg-[#FAFAF8] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all relative"
+              className="bg-white p-7 group hover:bg-[#FAFAF8] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all relative flex flex-col"
             >
               <div className="absolute top-0 left-0 w-0.5 h-0 bg-[#C41E1E] group-hover:h-full transition-all duration-300" />
               <div className="flex justify-between items-start gap-2.5 mb-2">
@@ -216,18 +229,7 @@ export default function RestaurantPage() {
                     {lang === 'fr' ? item.name.en : item.name.fr}
                   </p>
                 </div>
-                {item.sizes ? (
-                  <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
-                    {item.sizes.map(s => (
-                      <div key={s.label} className="flex items-center gap-1.5">
-                        <span className="text-[10px] text-[#9A8878] font-inter font-medium">{s.label}</span>
-                        <span className="font-syne text-[16px] font-extrabold text-[#C41E1E] tracking-[-0.02em]">
-                          ${s.price.toFixed(2)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
+                {!item.sizes && (
                   <span className="font-syne text-[20px] font-extrabold text-[#C41E1E] tracking-[-0.02em] flex-shrink-0">
                     ${item.price.toFixed(2)}
                   </span>
@@ -238,10 +240,40 @@ export default function RestaurantPage() {
                 {item.description[lang]}
               </p>
               {item.badge && (
-                <span className="inline-block mt-3 text-[9px] tracking-[0.12em] uppercase text-[#C41E1E] border border-[#C41E1E]/20 px-2 py-0.5 rounded-sm font-inter">
+                <span className="inline-block mt-3 text-[9px] tracking-[0.12em] uppercase text-[#C41E1E] border border-[#C41E1E]/20 px-2 py-0.5 rounded-sm font-inter w-fit">
                   {item.badge[lang]}
                 </span>
               )}
+
+              {/* ── Order buttons (one per size, or one for the whole item) ── */}
+              <div className="mt-auto pt-4 flex flex-col gap-1.5">
+                {item.sizes ? (
+                  item.sizes.map(s => (
+                    <button
+                      key={s.label}
+                      type="button"
+                      onClick={() => orderNow(item, s)}
+                      className="flex items-center justify-between w-full bg-[#0F0A06] text-white px-4 py-2.5 text-[11px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#C41E1E] transition-colors"
+                    >
+                      <span className="flex items-center gap-2">
+                        <span className="text-white/55">{s.label}</span>
+                        <span className="font-syne text-[14px] font-extrabold tracking-[-0.02em]">
+                          ${s.price.toFixed(2)}
+                        </span>
+                      </span>
+                      <span>{t('Commander →', 'Order →')}</span>
+                    </button>
+                  ))
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => orderNow(item)}
+                    className="w-full bg-[#0F0A06] text-white px-4 py-2.5 text-[11px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#C41E1E] transition-colors"
+                  >
+                    {t('Commander →', 'Order →')}
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>

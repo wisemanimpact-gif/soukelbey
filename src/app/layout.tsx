@@ -4,6 +4,7 @@ import { siteMeta, jsonLd } from '@/lib/seo'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { LanguageProvider } from '@/lib/LanguageContext'
+import { CartProvider } from '@/lib/CartContext'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteMeta.url),
@@ -46,9 +47,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <LanguageProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <CartProvider>
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </CartProvider>
         </LanguageProvider>
       </body>
     </html>
