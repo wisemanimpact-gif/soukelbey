@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { menuItems, categories, type MenuItem } from '@/lib/menu'
 import { useLanguage } from '@/lib/LanguageContext'
 import { useCart } from '@/lib/CartContext'
@@ -11,15 +10,24 @@ import { useCart } from '@/lib/CartContext'
 export default function RestaurantPage() {
   const { lang, t } = useLanguage()
   const { addItem, cart } = useCart()
-  const router = useRouter()
   const [activeCategory, setActiveCategory] = useState('pizzas')
   const filtered = menuItems.filter(item => item.category === activeCategory)
   const cartCount = cart.reduce((s, l) => s + l.qty, 0)
 
-  // Add to cart and jump straight to /commander
+  // Click an item card → add to cart (stay on page so user can keep browsing).
+  // Brief flash feedback indicates the add was registered.
+  const [flashId, setFlashId] = useState<string | null>(null)
   const orderNow = (item: MenuItem, size?: { label: string; price: number }) => {
     addItem(item, size)
-    router.push('/commander')
+    const flashKey = size ? `${item.id}::${size.label}` : item.id
+    setFlashId(flashKey)
+    window.setTimeout(() => setFlashId(prev => (prev === flashKey ? null : prev)), 650)
+  }
+
+  // Count of a specific item already in the cart (per size if applicable)
+  const qtyOf = (item: MenuItem, size?: { label: string; price: number }) => {
+    const key = size ? `${item.id}::${size.label}` : item.id
+    return cart.find(l => l.key === key)?.qty ?? 0
   }
 
   const iftarItems = lang === 'en'
@@ -212,70 +220,113 @@ export default function RestaurantPage() {
           ))}
         </div>
 
-        {/* Menu grid */}
+        {/* Menu grid — entire card is clickable; click adds to cart */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-black/8 border border-black/8">
-          {filtered.map(item => (
-            <div
-              key={item.id}
-              className="bg-white p-7 group hover:bg-[#FAFAF8] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all relative flex flex-col"
-            >
-              <div className="absolute top-0 left-0 w-0.5 h-0 bg-[#C41E1E] group-hover:h-full transition-all duration-300" />
-              <div className="flex justify-between items-start gap-2.5 mb-2">
-                <div>
-                  <h3 className="font-syne text-[18px] font-bold text-[#0F0A06] tracking-[-0.01em] leading-snug">
-                    {item.name[lang]}
-                  </h3>
-                  <p className="text-[10px] tracking-[0.1em] uppercase text-[#9A8878] font-inter mt-1">
-                    {lang === 'fr' ? item.name.en : item.name.fr}
-                  </p>
-                </div>
-                {!item.sizes && (
-                  <span className="font-syne text-[20px] font-extrabold text-[#C41E1E] tracking-[-0.02em] flex-shrink-0">
-                    ${item.price.toFixed(2)}
+          {filtered.map(item => {
+            // Items with sizes: each size is its own clickable row inside the card
+            // Items without sizes: the whole card is one click target
+            const hasSizes = Boolean(item.sizes && item.sizes.length > 0)
+            const simpleQty = hasSizes ? 0 : qtyOf(item)
+            const simpleFlash = !hasSizes && flashId === item.id
+
+            return (
+              <div
+                key={item.id}
+                role={hasSizes ? undefined : 'button'}
+                tabIndex={hasSizes ? undefined : 0}
+                aria-label={hasSizes ? undefined : t(`Ajouter ${item.name.fr} au panier`, `Add ${item.name.en} to cart`) as string}
+                onClick={hasSizes ? undefined : () => orderNow(item)}
+                onKeyDown={hasSizes ? undefined : (e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    orderNow(item)
+                  }
+                }}
+                className={`bg-white p-7 group hover:bg-[#FAFAF8] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all relative flex flex-col ${
+                  hasSizes ? '' : 'cursor-pointer select-none'
+                } ${simpleFlash ? 'ring-2 ring-[#C41E1E]' : ''}`}
+              >
+                <div className="absolute top-0 left-0 w-0.5 h-0 bg-[#C41E1E] group-hover:h-full transition-all duration-300" />
+
+                {/* Cart qty badge — visible when this item is already in the cart */}
+                {!hasSizes && simpleQty > 0 && (
+                  <span className="absolute top-3 right-3 z-10 inline-flex items-center justify-center min-w-[24px] h-6 px-2 rounded-full bg-[#C41E1E] text-white text-[11px] font-bold font-inter shadow-md">
+                    {simpleQty}
                   </span>
                 )}
-              </div>
-              <hr className="border-black/7 my-2.5" />
-              <p className="text-[13px] text-[#4A3828] leading-[1.75] font-light font-inter">
-                {item.description[lang]}
-              </p>
-              {item.badge && (
-                <span className="inline-block mt-3 text-[9px] tracking-[0.12em] uppercase text-[#C41E1E] border border-[#C41E1E]/20 px-2 py-0.5 rounded-sm font-inter w-fit">
-                  {item.badge[lang]}
-                </span>
-              )}
 
-              {/* ── Order buttons (one per size, or one for the whole item) ── */}
-              <div className="mt-auto pt-4 flex flex-col gap-1.5">
-                {item.sizes ? (
-                  item.sizes.map(s => (
-                    <button
-                      key={s.label}
-                      type="button"
-                      onClick={() => orderNow(item, s)}
-                      className="flex items-center justify-between w-full bg-[#0F0A06] text-white px-4 py-2.5 text-[11px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#C41E1E] transition-colors"
-                    >
-                      <span className="flex items-center gap-2">
-                        <span className="text-white/55">{s.label}</span>
-                        <span className="font-syne text-[14px] font-extrabold tracking-[-0.02em]">
-                          ${s.price.toFixed(2)}
-                        </span>
-                      </span>
-                      <span>{t('Commander →', 'Order →')}</span>
-                    </button>
-                  ))
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => orderNow(item)}
-                    className="w-full bg-[#0F0A06] text-white px-4 py-2.5 text-[11px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#C41E1E] transition-colors"
-                  >
-                    {t('Commander →', 'Order →')}
-                  </button>
+                <div className="flex justify-between items-start gap-2.5 mb-2">
+                  <div>
+                    <h3 className="font-syne text-[18px] font-bold text-[#0F0A06] tracking-[-0.01em] leading-snug">
+                      {item.name[lang]}
+                    </h3>
+                    <p className="text-[10px] tracking-[0.1em] uppercase text-[#9A8878] font-inter mt-1">
+                      {lang === 'fr' ? item.name.en : item.name.fr}
+                    </p>
+                  </div>
+                  {!hasSizes && (
+                    <span className="font-syne text-[20px] font-extrabold text-[#C41E1E] tracking-[-0.02em] flex-shrink-0">
+                      ${item.price.toFixed(2)}
+                    </span>
+                  )}
+                </div>
+                <hr className="border-black/7 my-2.5" />
+                <p className="text-[13px] text-[#4A3828] leading-[1.75] font-light font-inter">
+                  {item.description[lang]}
+                </p>
+                {item.badge && (
+                  <span className="inline-block mt-3 text-[9px] tracking-[0.12em] uppercase text-[#C41E1E] border border-[#C41E1E]/20 px-2 py-0.5 rounded-sm font-inter w-fit">
+                    {item.badge[lang]}
+                  </span>
                 )}
+
+                {/* Footer: hint to click (simple items) OR per-size click rows (sized items) */}
+                <div className="mt-auto pt-4">
+                  {hasSizes ? (
+                    <div className="flex flex-col gap-1.5">
+                      {item.sizes!.map(s => {
+                        const q = qtyOf(item, s)
+                        const isFlashing = flashId === `${item.id}::${s.label}`
+                        return (
+                          <button
+                            key={s.label}
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              orderNow(item, s)
+                            }}
+                            className={`flex items-center justify-between w-full bg-[#0F0A06] text-white px-4 py-2.5 text-[11px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#C41E1E] transition-all ${
+                              isFlashing ? 'ring-2 ring-[#C41E1E] ring-offset-2 ring-offset-white' : ''
+                            }`}
+                          >
+                            <span className="flex items-center gap-2">
+                              <span className="text-white/55">{s.label}</span>
+                              <span className="font-syne text-[14px] font-extrabold tracking-[-0.02em]">
+                                ${s.price.toFixed(2)}
+                              </span>
+                            </span>
+                            <span className="flex items-center gap-2">
+                              {q > 0 && (
+                                <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1 rounded-full bg-white text-[#C41E1E] text-[10px] font-bold">
+                                  {q}
+                                </span>
+                              )}
+                              <span>{t('Ajouter +', 'Add +')}</span>
+                            </span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-between text-[10px] tracking-[0.12em] uppercase text-[#9A8878] font-medium font-inter">
+                      <span>{t('Cliquez pour ajouter', 'Click to add')}</span>
+                      <span className="text-[#C41E1E] text-[14px] leading-none">+</span>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 

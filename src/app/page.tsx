@@ -136,8 +136,8 @@ export default function Home() {
             </span>
           </div>
           <h1 className="font-syne text-[clamp(56px,9vw,116px)] text-white leading-[0.92] font-extrabold tracking-[-0.03em] mb-7">
-            {t(<>Saveurs<br /><em className="font-normal text-white/45">authentiques</em><br /><span className="text-[#002868]">de Tunisie.</span></>,
-               <>Authentic<br /><em className="font-normal text-white/45">flavors</em><br /><span className="text-[#002868]">of Tunisia.</span></>)}
+            {t(<>Saveurs<br /><em className="font-normal text-white/45">authentiques</em><br /><span className="text-[#C41E1E]">de Tunisie.</span></>,
+               <>Authentic<br /><em className="font-normal text-white/45">flavors</em><br /><span className="text-[#C41E1E]">of Tunisia.</span></>)}
           </h1>
 
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8 flex-wrap">

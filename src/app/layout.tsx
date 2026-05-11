@@ -3,6 +3,7 @@ import './globals.css'
 import { siteMeta, jsonLd } from '@/lib/seo'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import CartBar from '@/components/CartBar'
 import { LanguageProvider } from '@/lib/LanguageContext'
 import { CartProvider } from '@/lib/CartContext'
 
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Navbar />
             <main>{children}</main>
             <Footer />
+            <CartBar />
           </CartProvider>
         </LanguageProvider>
       </body>
