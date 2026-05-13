@@ -1,4 +1,4 @@
-name: Build & Deploy to WHC
+name: Build & Deploy to WHC (Node.js)
 
 on:
   push:
@@ -22,8 +22,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js site
+      - name: Build Next.js (production)
         run: npm run build
+        env:
+          # Build-time public env vars (read by Next.js at build).
+          # Server-only secrets stay in cPanel — never here.
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
 
       - name: Deploy to WHC via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -31,6 +36,34 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./out/
-          server-dir: /public_html/
+          # Upload everything from repo root except things excluded below.
+          local-dir: ./
+          # Path on the WHC server where the cPanel Node.js app lives.
+          # Change this in repo Settings → Secrets if your app root differs.
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/node_modules/**
+            **/.next/cache/**
+            **/out/**
+            **/out.zip
+            **/.env
+            **/.env.*
+            **/.DS_Store
+            **/*.docx
+            **/*.pdf
+            **/*.xlsx
+            **/tsconfig.tsbuildinfo
+
+      - name: Trigger Passenger restart
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./.github/passenger-restart/
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}tmp/
           dangerous-clean-slate: false

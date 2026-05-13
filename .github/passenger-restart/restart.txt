@@ -1,0 +1,4 @@
+Passenger restart trigger.
+This file is uploaded to <app-root>/tmp/restart.txt after each deploy.
+Phusion Passenger watches it and restarts the Node.js app when the
+modification time changes.

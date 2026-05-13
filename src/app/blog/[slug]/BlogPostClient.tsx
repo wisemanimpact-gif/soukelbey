@@ -48,7 +48,7 @@ function ArticleViandHalal() {
 
       <h1 className="font-syne text-[clamp(34px,5vw,58px)] font-extrabold text-[#0F0A06] leading-[0.95] tracking-[-0.03em] mb-8">
         {t(<>C&apos;est quoi la<br /><em className="font-normal text-[#9A8878]">viande halal?</em></>,
-           <>What is<br /><em className="font-normal text-[#9A8878]">halal meat?</em></>)}
+          <>What is<br /><em className="font-normal text-[#9A8878]">halal meat?</em></>)}
       </h1>
 
       <div className="my-10">
@@ -90,7 +90,7 @@ function ArticleViandHalal() {
             </p>
 
             <PhotoPlaceholder
-              captionFr="Coupes fraîches du jour — Souk El Bey"
+              captionFr="Coupes fraîches du jour 'NOUVEAU ARRIVAGE CHAQUE JEUDI — Souk El Bey"
               captionEn="Fresh cuts of the day — Souk El Bey"
             />
 
@@ -210,7 +210,7 @@ function ArticlePartiesAgneau() {
 
       <h1 className="font-syne text-[clamp(34px,5vw,58px)] font-extrabold text-[#0F0A06] leading-[0.95] tracking-[-0.03em] mb-8">
         {t(<>Les différentes<br /><em className="font-normal text-[#9A8878]">parties de l&apos;agneau</em></>,
-           <>The different<br /><em className="font-normal text-[#9A8878]">cuts of lamb</em></>)}
+          <>The different<br /><em className="font-normal text-[#9A8878]">cuts of lamb</em></>)}
       </h1>
 
       <div className="my-10">
