@@ -68,7 +68,7 @@ const sections = [
   },
   {
     key: 'poulet',
-    titleFr: 'Poulete', titleEn: 'Chicken',
+    titleFr: 'Poulet', titleEn: 'Chicken',
     subtitleFr: 'Frais', subtitleEn: 'Fresh',
     labelFr: 'Volaille fraîche', labelEn: 'Fresh poultry',
     accent: '#C41E1E',
