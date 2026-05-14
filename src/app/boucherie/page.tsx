@@ -117,7 +117,7 @@ export default function BoucheriePage() {
           </h1>
           <p className="mt-6 text-[15px] text-white/45 leading-[1.85] font-light font-inter max-w-[480px]">
             {t(
-              'Viandes fraîches sélectionnées avec soin — boeuf, veau, agneau et poulet halal. Qualité garantie, coupées à la demande.',
+              'Viandes fraîches sélectionnées avec soin et amour — boeuf, veau, agneau et poulet halal. Qualité garantie, coupées à la demande.',
               'Fresh meats carefully selected — beef, veal, lamb and halal chicken. Guaranteed quality, cut to order.'
             )}
           </p>
