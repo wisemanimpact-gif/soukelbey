@@ -68,14 +68,14 @@ const sections = [
   },
   {
     key: 'poulet',
-    titleFr: 'Poulet', titleEn: 'Chicken',
+    titleFr: 'Poulete', titleEn: 'Chicken',
     subtitleFr: 'Frais', subtitleEn: 'Fresh',
     labelFr: 'Volaille fraîche', labelEn: 'Fresh poultry',
     accent: '#C41E1E',
     imagePlaceholder: '/images/poulet.png',
     imageAlt: 'Poulet',
     itemsFr: [
-      'Poitrine de poulet',
+      'Poitrine de poulet halal',
       'Cuisse de poulet',
       'Pilons',
       'Poulet entier',
@@ -113,7 +113,7 @@ export default function BoucheriePage() {
           </div>
           <h1 className="font-syne text-[clamp(52px,8vw,96px)] text-white leading-[0.9] font-extrabold tracking-[-0.03em]">
             {t(<>Notre <em className="font-normal text-white/30">boucherie</em></>,
-               <>Our <em className="font-normal text-white/30">butcher shop</em></>)}
+              <>Our <em className="font-normal text-white/30">butcher shop</em></>)}
           </h1>
           <p className="mt-6 text-[15px] text-white/45 leading-[1.85] font-light font-inter max-w-[480px]">
             {t(
