@@ -62,7 +62,7 @@ function ArticleViandHalal() {
         </div>
         <p className="text-center text-[12px] text-[#9A8878] font-inter font-light mt-2 italic">
           {t(
-            'Des animaux élevés en plein air — un gage de qualité halal',
+            'Des animaux élevés en plein air et en libert un gage de qualité halal',
             'Animals raised outdoors — a mark of halal quality'
           )}
         </p>
