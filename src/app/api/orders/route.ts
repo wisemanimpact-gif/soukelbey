@@ -1,4 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { menuItems } from '@/lib/menu'
+
+// Build a quick lookup so we can tag each Stripe line with [PLAT] / [SANDWICH]
+// — that way the kitchen sees the prep type at a glance in the Stripe receipt,
+// the confirmation email and the dashboard.
+const itemTypeById = new Map(menuItems.map(m => [m.id, m.category]))
+const tagFor = (itemId: string): string => {
+  const cat = itemTypeById.get(itemId)
+  if (cat === 'plats') return '[PLAT] '
+  if (cat === 'sandwichs') return '[SANDWICH] '
+  return ''
+}
 
 // ─── Stripe Checkout Session ─────────────────────────────────
 // Receives the cart + customer info from /commander, creates a
@@ -102,18 +114,27 @@ export async function POST(req: NextRequest) {
     const Stripe = (await import('stripe')).default
     const stripe = new Stripe(secretKey, { apiVersion: '2025-02-24.acacia' })
 
-    // Build line items in cents
-    const lineItems = lines.map(l => ({
-      quantity: l.qty,
-      price_data: {
-        currency: 'cad',
-        unit_amount: Math.round(l.unitPrice * 100),
-        product_data: {
-          name: l.size ? `${l.name} (${l.size})` : l.name,
-          metadata: { itemId: l.itemId, size: l.size ?? '' },
+    // Build line items in cents — tag plats / sandwichs so Dave can tell
+    // at a glance what kind of prep each line needs.
+    const lineItems = lines.map(l => {
+      const tag = tagFor(l.itemId)
+      const displayName = l.size ? `${l.name} (${l.size})` : l.name
+      return {
+        quantity: l.qty,
+        price_data: {
+          currency: 'cad',
+          unit_amount: Math.round(l.unitPrice * 100),
+          product_data: {
+            name: `${tag}${displayName}`,
+            metadata: {
+              itemId: l.itemId,
+              size: l.size ?? '',
+              type: itemTypeById.get(l.itemId) ?? '',
+            },
+          },
         },
-      },
-    }))
+      }
+    })
 
     // Add the two Quebec taxes as separate line items
     if (tps > 0) {
@@ -124,7 +145,7 @@ export async function POST(req: NextRequest) {
           unit_amount: Math.round(tps * 100),
           product_data: {
             name: lang === 'en' ? 'GST (5%)' : 'TPS (5%)',
-            metadata: { itemId: 'tax-tps', size: '' },
+            metadata: { itemId: 'tax-tps', size: '', type: '' },
           },
         },
       })
@@ -137,7 +158,7 @@ export async function POST(req: NextRequest) {
           unit_amount: Math.round(tvq * 100),
           product_data: {
             name: lang === 'en' ? 'QST (9.975%)' : 'TVQ (9.975%)',
-            metadata: { itemId: 'tax-tvq', size: '' },
+            metadata: { itemId: 'tax-tvq', size: '', type: '' },
           },
         },
       })
@@ -145,7 +166,11 @@ export async function POST(req: NextRequest) {
 
     // Compact summary for SMS / email — Stripe metadata values capped at 500 chars
     const itemSummary = lines
-      .map(l => `${l.qty}× ${l.size ? `${l.name} (${l.size})` : l.name}`)
+      .map(l => {
+        const tag = tagFor(l.itemId)
+        const label = l.size ? `${l.name} (${l.size})` : l.name
+        return `${l.qty}× ${tag}${label}`
+      })
       .join(' | ')
       .slice(0, 480)
 

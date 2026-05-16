@@ -169,6 +169,21 @@ export default function RestaurantPage() {
 
                 <div className="flex justify-between items-start gap-2.5 mb-2">
                   <div>
+                    {/* Type tag — visible only for plats & sandwichs so the
+                        kitchen instantly knows the prep style. */}
+                    {(item.category === 'plats' || item.category === 'sandwichs') && (
+                      <span
+                        className={`inline-block mb-1.5 text-[9px] tracking-[0.14em] uppercase font-bold font-inter px-2 py-0.5 rounded-sm ${
+                          item.category === 'plats'
+                            ? 'bg-[#C41E1E] text-white'
+                            : 'bg-[#0F0A06] text-white'
+                        }`}
+                      >
+                        {item.category === 'plats'
+                          ? t('Plat', 'Main')
+                          : t('Sandwich', 'Sandwich')}
+                      </span>
+                    )}
                     <h3 className="font-syne text-[18px] font-bold text-[#0F0A06] tracking-[-0.01em] leading-snug">
                       {item.name[lang]}
                     </h3>
