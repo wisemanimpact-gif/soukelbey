@@ -30,24 +30,6 @@ export default function RestaurantPage() {
     return cart.find(l => l.key === key)?.qty ?? 0
   }
 
-  const iftarItems = lang === 'en'
-    ? [
-        'Lben & Dates',
-        'Vermicelli soup / Lentil soup',
-        'Green salad & Grilled salad',
-        'Main course of your choice',
-        'Fatma\'s fingers / Tuna brik',
-        'Mint tea',
-      ]
-    : [
-        'Lben & Dattes',
-        'Soupe langue d\'oiseaux / Soupe lentilles',
-        'Salade verte & Salade grillée',
-        'Plat principal au choix',
-        'Doigts de Fatma / Brick au thon',
-        'Thé à la menthe',
-      ]
-
   return (
     <>
       {/* ── HERO ── */}
@@ -78,76 +60,6 @@ export default function RestaurantPage() {
           </h1>
         </div>
       </section>
-
-      {/* ── MENU IFTAR SPECIAL ── */}
-      <section className="bg-[#0B0705] px-[5vw] py-20 overflow-hidden">
-        <div className="flex items-center gap-2.5 mb-10">
-          <div className="w-4 h-px bg-[#E8B84B]" />
-          <span className="text-[10px] tracking-[0.2em] uppercase text-[#E8B84B] font-medium font-inter">
-            {t('Offre spéciale', 'Special offer')}
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h2 className="font-syne text-[clamp(34px,4.5vw,58px)] font-extrabold text-white leading-[0.95] tracking-[-0.03em] mb-6">
-              {t(<>Menu<br /><em className="font-normal text-[#E8B84B]">Iftar</em>{' '}<span className="text-[#C41E1E]">Ramadan</span></>,
-                 <>Ramadan<br /><em className="font-normal text-[#E8B84B]">Iftar</em>{' '}<span className="text-[#C41E1E]">Menu</span></>)}
-            </h2>
-            <p className="text-[15px] text-white/50 leading-[1.85] font-light font-inter mb-8 max-w-[440px]">
-              {t(
-                'Un festin complet pour rompre le jeûne — soupe, salades, plat principal, thé à la menthe et plus. Livraison à partir de 15h00, dans un rayon de 5 km.',
-                'A complete feast to break the fast — soup, salads, main course, mint tea and more. Delivery starting at 3:00 PM, within a 5 km radius.'
-              )}
-            </p>
-
-            <div className="space-y-2 mb-10">
-              {iftarItems.map(item => (
-                <div key={item} className="flex items-center gap-3 text-[13.5px] text-white/65 font-inter font-light">
-                  <span className="text-[#C4931A] text-[10px]">☽</span>
-                  {item}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex items-center gap-6">
-              <div className="flex items-baseline gap-1">
-                <span className="font-syne text-[52px] font-extrabold text-[#E8B84B] leading-none tracking-[-0.04em]">34</span>
-                <span className="font-syne text-[28px] font-extrabold text-[#E8B84B]/70 tracking-[-0.02em]">{t(',99$', '.99$')}</span>
-              </div>
-              <div className="text-[11px] text-white/30 leading-[1.6] font-inter">
-                {t(<>Par personne<br />Livraison dès 15h00<br /><span className="text-[#C4931A]">~5 km autour</span></>,
-                   <>Per person<br />Delivery from 3:00 PM<br /><span className="text-[#C4931A]">~5 km radius</span></>)}
-              </div>
-            </div>
-
-            <Link
-              href="/commander"
-              className="inline-block mt-8 bg-[#C41E1E] text-white px-8 py-3.5 text-[12px] tracking-[0.08em] uppercase font-medium font-inter rounded-sm hover:bg-[#A81818] hover:-translate-y-0.5 transition-all no-underline"
-            >
-              {t('Commander mon Iftar →', 'Order my Iftar →')}
-            </Link>
-          </div>
-
-          <div className="relative">
-            <div className="relative rounded-sm overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.6)]">
-              <Image
-                src="/images/640390323_122188440398537629_3537345496558182014_n.jpg"
-                alt="Menu Iftar Souk El Bey"
-                width={600}
-                height={800}
-                className="w-full h-auto object-cover"
-              />
-            </div>
-            <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full bg-[#C41E1E] flex flex-col items-center justify-center shadow-xl border-4 border-[#0B0705]">
-              <span className="font-syne text-[22px] font-extrabold text-white leading-none tracking-[-0.03em]">34</span>
-              <span className="text-[10px] text-white/80 font-inter">{t(',99$', '.99$')}</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="h-px bg-gradient-to-r from-transparent via-[#C4931A]/30 to-transparent" />
 
       {/* ── FRICASSÉ HIGHLIGHT ── */}
       <section className="bg-[#0F0A06] overflow-hidden">

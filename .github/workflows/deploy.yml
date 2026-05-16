@@ -30,6 +30,17 @@ jobs:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
 
+      - name: Stamp restart trigger with current timestamp
+        # Force restart.txt content to change every run so FTP-Deploy-Action
+        # actually uploads it (otherwise it's skipped as unchanged and
+        # Phusion Passenger never reboots — site keeps serving old build).
+        run: |
+          mkdir -p .github/passenger-restart
+          echo "Passenger restart trigger." > .github/passenger-restart/restart.txt
+          echo "Deploy run: ${GITHUB_RUN_ID} / sha: ${GITHUB_SHA}" >> .github/passenger-restart/restart.txt
+          echo "Stamped at: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> .github/passenger-restart/restart.txt
+          cat .github/passenger-restart/restart.txt
+
       - name: Deploy to WHC via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -42,6 +53,10 @@ jobs:
           # Change this in repo Settings → Secrets if your app root differs.
           server-dir: ${{ secrets.FTP_REMOTE_DIR }}
           dangerous-clean-slate: false
+          log-level: verbose
+          # Use an explicit, project-scoped state file so we can wipe it from
+          # cPanel File Manager if sync ever desyncs.
+          state-name: .ftp-deploy-sync-state-souk.json
           exclude: |
             **/.git*
             **/.git*/**
@@ -67,3 +82,5 @@ jobs:
           local-dir: ./.github/passenger-restart/
           server-dir: ${{ secrets.FTP_REMOTE_DIR }}tmp/
           dangerous-clean-slate: false
+          log-level: verbose
+          state-name: .ftp-deploy-sync-state-restart.json

@@ -97,15 +97,6 @@ const blogPosts = [
     dateFr: '28 mars 2025', dateEn: 'March 28, 2025',
     slug: 'epices-tunisiennes-essentielles', bg: 'from-[#0A2A04] to-[#207010]',
   },
-  {
-    catFr: 'Communauté', catEn: 'Community',
-    titleFr: 'Ramadan 2025 : nos menus iftar spéciaux à Deux-Montagnes',
-    titleEn: 'Ramadan 2025: our special iftar menus in Deux-Montagnes',
-    excerptFr: 'Mosli, brik, chorba et thé à la menthe — nos offres pour le mois sacré.',
-    excerptEn: 'Mosli, brik, chorba and mint tea — our offerings for the holy month.',
-    dateFr: '15 mars 2025', dateEn: 'March 15, 2025',
-    slug: 'ramadan-2025-menu-iftar', bg: 'from-[#04102A] to-[#0A2880]',
-  },
 ]
 
 const featuredItems = menuItems.filter(m => m.category === 'plats').slice(0, 6)
