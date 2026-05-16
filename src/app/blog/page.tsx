@@ -10,7 +10,7 @@ const articles = [
     titleFr: "C'est quoi la viande halal?",
     titleEn: 'What is halal meat?',
     excerptFr:
-      "Halal, ça veut dire quoi exactement? On vous explique simplement l'origine, les règles et pourquoi ça compte pour nous chez Souk El Bey.",
+      "Halal, ça veut dire quoi exactement cccccccccccc? On vous explique simplement l'origine, les règles et pourquoi ça compte pour nous chez Souk El Bey.",
     excerptEn:
       'What exactly does "halal" mean? We explain the origins, the rules and why it matters to us at Souk El Bey.',
     date: '2024',
@@ -56,7 +56,7 @@ export default function BlogPage() {
           </div>
           <h1 className="font-syne text-[clamp(52px,8vw,96px)] text-white leading-[0.9] font-extrabold tracking-[-0.03em]">
             {t(<>Le <em className="font-normal text-white/30">blog</em></>,
-               <>The <em className="font-normal text-white/30">blog</em></>)}
+              <>The <em className="font-normal text-white/30">blog</em></>)}
           </h1>
           <p className="mt-6 text-[15px] text-white/45 leading-[1.85] font-light font-inter max-w-[480px]">
             {t(
@@ -81,9 +81,9 @@ export default function BlogPage() {
                 <div className="flex flex-col items-center gap-2 text-[#9A8878]">
                   <div className="w-12 h-12 rounded-full border-2 border-dashed border-[#9A8878]/40 flex items-center justify-center">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-50">
-                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                      <circle cx="8.5" cy="8.5" r="1.5"/>
-                      <polyline points="21 15 16 10 5 21"/>
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                      <circle cx="8.5" cy="8.5" r="1.5" />
+                      <polyline points="21 15 16 10 5 21" />
                     </svg>
                   </div>
                   <span className="text-[10px] tracking-[0.12em] uppercase font-inter font-medium opacity-50">
