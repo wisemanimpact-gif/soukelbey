@@ -132,7 +132,7 @@ export const menuItems: MenuItem[] = [
   // ── PLATS ───────────────────────────────────────────────────
   {
     id: 'kafteji',
-    name: { fr: 'Kafteji', en: 'Kafteji' },
+    name: { fr: 'Kafteji (Plat)', en: 'Kafteji (Plate)' },
     description: {
       fr: 'Tastira (poivrons, piments et tomates et frites hachés), œuf au plat et frites.',
       en: 'Tastira (chopped peppers, chili and tomatoes with fries), fried egg and fries.',
@@ -354,7 +354,7 @@ export const menuItems: MenuItem[] = [
   // ── SANDWICHS ────────────────────────────────────────────────
   {
     id: 'sandwich-kafteji',
-    name: { fr: 'Kafteji', en: 'Kafteji' },
+    name: { fr: 'Kafteji (Sandwich)', en: 'Kafteji (Sandwich)' },
     description: {
       fr: 'Tomates, poivrons et piments frits et hachés, accompagnés d\'un œuf au plat et frites.',
       en: 'Fried and chopped tomatoes, peppers and chili, with a fried egg and fries.',
